@@ -19,7 +19,7 @@
         }
 
         .container {
-            width: 300px;
+            width: 400px;
             margin: 0 auto;
             background: #fff;
             border-radius: 4px;
@@ -28,12 +28,14 @@
             padding: 20px;
         }
 
-        .login-form {
+        .login-form,
+        .booking-form {
             margin-top: 20px;
         }
 
         input[type="text"],
-        input[type="password"] {
+        input[type="password"],
+        select {
             width: 100%;
             padding: 10px;
             margin: 5px 0;
@@ -61,14 +63,31 @@
             display: none;
         }
 
-        #areaSelectionPage button,
-        #availabilityPage button,
-        #availabilityPage #availabilityText {
+        #availabilityPage #availabilityText,
+        #availabilityPage #parkingLots {
             margin: 10px;
         }
 
         #availabilityPage {
             text-align: left;
+        }
+
+        #availabilityPage .parkingLotsContainer {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        #availabilityPage .parkingLot {
+            width: 40px;
+            height: 40px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            line-height: 40px;
+            margin: 5px;
+            background-color: #66ff66;
+            cursor: pointer;
         }
 
         #clock {
@@ -104,8 +123,8 @@
 
     <div class="container" id="availabilityPage">
         <h1>Availability</h1>
-        <p id="availabilityText"></p>
-        <button id="bookButton">Book Parking</button>
+        <div id="availabilityText"></div>
+        <div class="parkingLotsContainer" id="parkingLots"></div>
         <button id="backButton">Back</button>
     </div>
 
@@ -114,16 +133,33 @@
         const sampleUsername = "user";
         const samplePassword = "password";
 
-        // Variables to track parking availability
-        let mawarAvailability = 100;
-        let melatiAvailability = 100;
-
         // Function to update availability text
         function updateAvailabilityText(area) {
-            if (area === "Mawar") {
-                document.getElementById("availabilityText").textContent = `${area} Parking Area - ${mawarAvailability}/100 available`;
-            } else if (area === "Melati") {
-                document.getElementById("availabilityText").textContent = `${area} Parking Area - ${melatiAvailability}/100 available`;
+            document.getElementById("availabilityText").textContent = `${area} Parking Area`;
+        }
+
+        // Function to update parking lots
+        function updateParkingLots(area) {
+            const parkingLotsContainer = document.getElementById("parkingLots");
+            parkingLotsContainer.innerHTML = "";
+
+            const rowCount = 4;
+            const colCount = 4;
+            let parkingLotNumber = 1;
+
+            for (let i = 0; i < rowCount; i++) {
+                const rowContainer = document.createElement("div");
+                rowContainer.className = "row";
+
+                for (let j = 0; j < colCount; j++) {
+                    const parkingLot = document.createElement("div");
+                    parkingLot.className = "parkingLot";
+                    parkingLot.textContent = parkingLotNumber++;
+
+                    rowContainer.appendChild(parkingLot);
+                }
+
+                parkingLotsContainer.appendChild(rowContainer);
             }
         }
 
@@ -158,28 +194,15 @@
         document.getElementById("mawarButton").addEventListener("click", function() {
             document.getElementById("availabilityPage").style.display = "block";
             updateAvailabilityText("Mawar");
+            updateParkingLots("Mawar");
+            document.getElementById("areaSelectionPage").style.display = "none";
         });
 
         document.getElementById("melatiButton").addEventListener("click", function() {
             document.getElementById("availabilityPage").style.display = "block";
             updateAvailabilityText("Melati");
-        });
-
-        document.getElementById("bookButton").addEventListener("click", function() {
-            const availabilityText = document.getElementById("availabilityText").textContent;
-            const area = availabilityText.split(" ")[0];
-
-            if (area === "Mawar" && mawarAvailability > 0) {
-                mawarAvailability--;
-                updateAvailabilityText("Mawar");
-                alert("Parking booked in Mawar Parking Area!");
-            } else if (area === "Melati" && melatiAvailability > 0) {
-                melatiAvailability--;
-                updateAvailabilityText("Melati");
-                alert("Parking booked in Melati Parking Area!");
-            } else {
-                alert("No available parking in this area.");
-            }
+            updateParkingLots("Melati");
+            document.getElementById("areaSelectionPage").style.display = "none";
         });
 
         document.getElementById("backButton").addEventListener("click", function() {
