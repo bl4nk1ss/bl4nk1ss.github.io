@@ -99,6 +99,11 @@
             font-size: 16px;
             color: #333;
         }
+
+        /* Additional CSS for unavailable parking lots */
+        .unavailable {
+            background-color: #ff6666 !important;
+        }
     </style>
 </head>
 <body>
@@ -133,6 +138,11 @@
         const sampleUsername = "user";
         const samplePassword = "password";
 
+        // Function to generate random availability for parking lots
+        function generateRandomAvailability() {
+            return Math.random() < 0.5; // 50% chance to return true (available) or false (unavailable)
+        }
+
         // Function to update availability text
         function updateAvailabilityText(area) {
             document.getElementById("availabilityText").textContent = `${area} Parking Area`;
@@ -155,6 +165,10 @@
                     const parkingLot = document.createElement("div");
                     parkingLot.className = "parkingLot";
                     parkingLot.textContent = parkingLotNumber++;
+
+                    // Generate random availability and set color accordingly
+                    const isAvailable = generateRandomAvailability();
+                    parkingLot.style.backgroundColor = isAvailable ? "#66ff66" : "#ff6666";
 
                     rowContainer.appendChild(parkingLot);
                 }
@@ -186,6 +200,10 @@
             if (username === sampleUsername && password === samplePassword) {
                 document.getElementById("loginPage").style.display = "none";
                 document.getElementById("areaSelectionPage").style.display = "block";
+
+                // Update availability on login
+                updateParkingLots("Mawar");
+                updateParkingLots("Melati");
             } else {
                 alert("Invalid username or password");
             }
