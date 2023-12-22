@@ -117,6 +117,8 @@
         <input type="text" id="username" placeholder="Username">
         <input type="password" id="password" placeholder="Password">
         <button id="loginButton">Login</button>
+        <p><b><small>Contact us</small></b></p>
+        <p><small>012-823 3067; IT Department</small></p>
     </div>
 
     <div class="container" id="areaSelectionPage">
@@ -132,6 +134,7 @@
         <div class="parkingLotsContainer" id="parkingLots"></div>
         <button id="backButton">Back</button>
     </div>
+    
 
     <script>
         // Sample username and password for testing
@@ -153,10 +156,11 @@
             const parkingLotsContainer = document.getElementById("parkingLots");
             parkingLotsContainer.innerHTML = "";
 
+            
             const rowCount = 4;
             const colCount = 4;
             let parkingLotNumber = 1;
-
+            
             for (let i = 0; i < rowCount; i++) {
                 const rowContainer = document.createElement("div");
                 rowContainer.className = "row";
